@@ -15,11 +15,13 @@ app.use(bodyParser.json());
 
 app.use(require("./routes/user"));
 
+const port = process.env.PORT || 8080;
+
 mongoose.connect(process.env.URLDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
-app.listen(process.env.PORT, () => {
-    console.log("Listening on port: ", process.env.PORT);
+app.listen(port, () => {
+    console.log(`Listening on port:, ${port}`);
 });
