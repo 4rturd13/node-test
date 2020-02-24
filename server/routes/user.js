@@ -10,12 +10,12 @@ app.get("/user", function(req, res) {
     let from = req.query.from || 0;
     from = Number(from);
 
-    User.find(
-        { state: true },
-        "name email img role state google"
-    ) /* exclude fields */
+    let limit = req.query.from || 5;
+    limit = Number(limit);
+
+    User.find({ state: true }, "name email img role state google")
         .skip(from)
-        .limit(5)
+        .limit(limit)
         .exec((err, user) => {
             if (err) {
                 return res.status(400).json({
@@ -85,7 +85,7 @@ app.put("/user/:id", function(req, res) {
 app.delete("/user/:id", function(req, res) {
     const id = req.params.id;
 
-    const changeState = {
+    let changeState = {
         state: false
     };
     /* change state to false on database */

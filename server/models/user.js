@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
-const Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+let userSchema = new Schema({
     name: {
         type: String,
         required: [true, "Name is required"]
@@ -34,6 +34,14 @@ const userSchema = new Schema({
         default: false
     }
 });
+
+userSchema.methods.toJSON = function() {
+    let user = this;
+    let userObject = user.toObject();
+    delete userObject.password;
+
+    return userObject;
+};
 
 userSchema.plugin(uniqueValidator, {
     message: "This {PATH} is already in use"
