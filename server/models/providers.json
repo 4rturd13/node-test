@@ -1,0 +1,25 @@
+{
+    "_id": { "$oid": "59cd1ce2b6a21df46fca0014" },
+    "firstName": "Peyton",
+    "lastName": "Friesen",
+    "middleName": "A",
+    "email": "Cordell.Rohan@gmail.com",
+    "specialty": {
+        "_id": { "$oid": "59cd1c94b6a21df46fc9ffea" },
+        "name": "Adolescent Medicine",
+        "createdBy": 44391,
+        "createdAt": { "$date": "2016-12-14T00:44:56.885+0000" },
+        "updatedBy": 30924,
+        "updatedAt": { "$date": "2017-09-27T23:31:36.258+0000" }
+    },
+    "projectedStartDate": { "$date": "2016-11-06T05:10:19.996+0000" },
+    "employerId": 318,
+    "providerType": "DPM",
+    "staffStatus": "PROVISIONAL",
+    "assignedTo": 33212,
+    "status": "UNDER_REVIEW",
+    "createdBy": 20223,
+    "createdAt": { "$date": "2017-05-19T10:52:02.672+0000" },
+    "updatedBy": 41063,
+    "updatedAt": { "$date": "2017-09-28T15:51:12.783+0000" }
+}
