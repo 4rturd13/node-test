@@ -1,11 +1,11 @@
 const express = require("express");
 
 const _ = require("underscore");
-const User = require("../models/user");
+const Providers = require("../models/providers");
 
 const app = express();
 
-app.get("/user", function(req, res) {
+app.get("/providers", function(req, res) {
     /*  pagination */
     let from = req.query.from || 0;
     from = Number(from);
@@ -13,10 +13,13 @@ app.get("/user", function(req, res) {
     let limit = req.query.from || 5;
     limit = Number(limit);
 
-    User.find({ state: true }, "name email img role state google")
+    Providers.find(
+        {}
+        // "firstName lastName middleName email"
+    )
         .skip(from)
         .limit(limit)
-        .exec((err, user) => {
+        .exec((err, providers) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -24,27 +27,34 @@ app.get("/user", function(req, res) {
                 });
             }
             /* quantity register */
-            User.countDocuments({ state: true }, (err, counter) => {
+            Providers.countDocuments({}, (err, counter) => {
                 res.json({
                     ok: true,
-                    user,
+                    providers,
                     quantity: counter
                 });
             });
         });
 });
 
-app.post("/user", function(req, res) {
+app.post("/providers", function(req, res) {
     const body = req.body;
 
-    const user = new User({
-        name: body.name,
+    const providers = new Providers({
+        firstName: body.firstName,
+        lastName: body.lastName,
+        middleName: body.middleName,
         email: body.email,
-        password: body.password,
-        role: body.role
+        specialties: body.specialties,
+        projectedStartDate: body.projectedStartDate,
+        employerId: body.employerId,
+        providerType: body.providerType,
+        staffStatus: body.staffStatus,
+        assignedTo: body.assignedTo,
+        status: body.status
     });
 
-    user.save((err, userDB) => {
+    providers.save((err, providersDB) => {
         if (err) {
             res.status(400).json({
                 ok: false,
@@ -53,20 +63,32 @@ app.post("/user", function(req, res) {
         }
         res.json({
             ok: true,
-            user: userDB
+            providers: providersDB
         });
     });
 });
 
-app.put("/user/:id", function(req, res) {
+app.put("/providers/:id", function(req, res) {
     const id = req.params.id;
-    const body = _.pick(req.body, ["name", "email", "img", "role", "state"]);
+    const body = _.pick(req.body, [
+        "firstName",
+        "lastName",
+        "middleName",
+        "email",
+        "specialties",
+        "projectedStartDate",
+        "employerId",
+        "providerType",
+        "staffStatus",
+        "assignedTo",
+        "status"
+    ]);
 
-    User.findByIdAndUpdate(
+    Providers.findByIdAndUpdate(
         id,
         body,
         { new: true, runValidators: true },
-        (err, userDB) => {
+        (err, providersDB) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -76,24 +98,24 @@ app.put("/user/:id", function(req, res) {
 
             res.json({
                 ok: true,
-                user: userDB
+                providers: providersDB
             });
         }
     );
 });
 
-app.delete("/user/:id", function(req, res) {
+app.delete("/providers/:id", function(req, res) {
     const id = req.params.id;
 
     let changeState = {
         state: false
     };
     /* change state to false on database */
-    User.findByIdAndUpdate(
+    Providers.findByIdAndUpdate(
         id,
         changeState,
         { new: true },
-        (err, userDeleted) => {
+        (err, providersDeleted) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -101,18 +123,18 @@ app.delete("/user/:id", function(req, res) {
                 });
             }
 
-            if (!userDeleted) {
+            if (!providersDeleted) {
                 return res.status(400).json({
                     ok: false,
                     err: {
-                        message: "User no found"
+                        message: "Providers no found"
                     }
                 });
             }
 
             res.json({
                 ok: true,
-                user: userDeleted
+                providers: providersDeleted
             });
         }
     );

@@ -3,6 +3,7 @@ require("./config/config");
 
 const express = require("express");
 const mongoose = require("mongoose");
+
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
 
@@ -13,15 +14,15 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(require("./routes/user"));
+app.use(require("./routes/index"));
 
 const port = process.env.PORT || 8080;
 
-mongoose.connect(process.env.URLDB, {
+mongoose.connect(process.env.MONGO_URI_DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
 app.listen(port, () => {
-    console.log(`Listening on port:, ${port}`);
+    console.log(`Listening on port: ${port}`);
 });
