@@ -2,6 +2,7 @@ const express = require("express");
 
 const _ = require("underscore");
 const Providers = require("../models/providers");
+const Specialties = require("../models/Specialties");
 
 const app = express();
 
@@ -45,7 +46,13 @@ app.post("/providers", function(req, res) {
         lastName: body.lastName,
         middleName: body.middleName,
         email: body.email,
-        specialties: body.specialties,
+        specialties: {
+            name: body.name,
+            createdBy: body.createdBy,
+            createdAt: body.createdAt,
+            updatedBy: body.updatedBy,
+            updatedAt: body.updatedAt
+        },
         projectedStartDate: body.projectedStartDate,
         employerId: body.employerId,
         providerType: body.providerType,

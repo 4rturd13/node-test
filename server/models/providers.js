@@ -10,50 +10,79 @@ let providersSchema = new Schema({
     },
     lastName: {
         type: String,
-        required: [false, "Lastname is required"]
+        required: [true, "Lastname is required"]
     },
     middleName: {
         type: String,
-        required: [false, "Middlename is required"]
+        required: [true, "Middlename is required"]
     },
     email: {
         type: String,
-        unique: false,
-        required: [false, "Email is required"]
+        unique: true,
+        required: [true, "Email is required"]
     },
-    specialties: {
-        // collection
-        // required: [false, "Specialties is required"]
-    },
+    // specialties: {
+    //     name: {
+    //         type: String,
+    //         unique: true,
+    //         required: [true, "Name is required"]
+    //     },
+    //     createdBy: {
+    //         type: Number,
+    //         default: 44391
+    //     },
+    //     createdAt: {
+    //         type: Date,
+    //         default: Date.now
+    //     },
+    //     updatedBy: {
+    //         type: Number,
+    //         default: 30924
+    //     },
+    //     updatedAt: {
+    //         type: Date,
+    //         default: Date.now
+    //     }
+    // },
     projectedStartDate: {
         type: String,
-        required: [false, "projectedStartDate is required"]
+        required: [true, "projectedStartDate is required"]
     },
     employerId: {
-        type: String,
-        required: false
+        type: Number,
+        required: true
     },
     providerType: {
         type: String,
-        required: [true, "providerType is required"],
         validate: {
             validator: function(v) {
-                return /\d{3}-\d{3}-\d{4}/.test(v);
+                const regex = /[\DC\DDS\DMD\DO\DPM\LCMFT\LCMHC\LCPC\MD\NP\PA]/;
+                return regex.test(v);
             },
             message: props => `${props.value} is not a valid providerType!`
-        }
+        },
+        required: [true, "providerType is required"]
     },
     staffStatus: {
-        type: Boolean,
-        required: [false, "staffStatus is required"]
+        type: String,
+        validate: {
+            validator: function(v) {
+                const regex = /[\ACTIVE\AFFILIATE\ASSOCIATE\COMMUNITY\CONSULTING\COURTESY\FACULTY\HONORARY\HOSPITALIST\TIOUSE_STAFF\TOCUM_TENENE\PROVISIONS\RESIDENT\TEACHING]/;
+                return regex.test(v);
+            },
+            message: props => `${props.value} is not a valid staffStatus!`
+        },
+        required: [true, "staffStatus is required"]
     },
+
     assignedTo: {
-        type: Boolean,
-        required: false
+        type: Number,
+        required: true
     },
     status: {
-        type: Boolean,
-        required: [false, "staffStatus is required"]
+        type: String,
+        default: "AWAITING_CREDENTIALS",
+        required: [true, "staffStatus is required"]
     }
 });
 

@@ -14,15 +14,21 @@ let specialtiesSchema = new Schema({
         default: 44391
     },
     createdAt: {
-        //TODO: creation date ISODate()
+        type: Date,
+        default: Date.now
     },
     updatedBy: {
         type: Number,
         default: 30924
     },
     updatedAt: {
-        //TODO: update date ISODate()
+        type: Date,
+        default: Date.now
     }
+});
+
+specialtiesSchema.plugin(uniqueValidator, {
+    message: "This {PATH} is already in use"
 });
 
 module.exports = mongoose.model("Specialties", specialtiesSchema);
